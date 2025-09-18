@@ -2,8 +2,16 @@
 
 import type React from "react";
 
-import { File, MoveLeft, X, Plus, Loader2 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -11,16 +19,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   useGetBrandQuery,
@@ -28,8 +26,10 @@ import {
   useGetSubCatQuery,
   usePostProdMutation,
 } from "@/rtk/adminSl";
+import { File, Loader2, MoveLeft, Plus, X } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 const DetailPr = () => {
   const [selectedColors, setSelectedColors] = useState<number>();
@@ -41,15 +41,8 @@ const DetailPr = () => {
   const [isAddingColor, setIsAddingColor] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const {
-    data,
-    isLoading: categoriesLoading,
-
-  } = useGetSubCatQuery({});
-  const {
-    data: catBran,
-    isLoading: brandsLoading,
-  } = useGetBrandQuery({});
+  const { data, isLoading: categoriesLoading } = useGetSubCatQuery({});
+  const { data: catBran, isLoading: brandsLoading } = useGetBrandQuery({});
   const {
     data: dataCol,
     isLoading: colorsLoading,
@@ -103,8 +96,6 @@ const DetailPr = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
-
 
   const toggleColorSelection = (colorId: number) => {
     setSelectedColors(colorId);
@@ -180,7 +171,7 @@ const DetailPr = () => {
     setIsAddingColor(true);
     try {
       const response = await fetch(
-        `http://37.27.29.18:8007/Color/add-color?ColorName=${encodeURIComponent(
+        `https://shop-api.softclub.tj/Color/add-color?ColorName=${encodeURIComponent(
           colorToUse
         )}`,
         {
@@ -399,7 +390,10 @@ const DetailPr = () => {
                   <Label className="text-sm font-medium text-foreground mb-2 block">
                     Скидка
                   </Label>
-                  <Select defaultValue="false" onValueChange={(val) => setValue("HasDiscount", val)}>
+                  <Select
+                    defaultValue="false"
+                    onValueChange={(val) => setValue("HasDiscount", val)}
+                  >
                     <SelectTrigger className={inputClass}>
                       <SelectValue placeholder="Есть скидка?" />
                     </SelectTrigger>

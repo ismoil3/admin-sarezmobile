@@ -5,20 +5,20 @@ import DeleteConfirmation from "@/components/delete-confirmation";
 import Toast from "@/components/toast-notification";
 import { Button } from "@/components/ui/button";
 import {
+  useAddBrandMutation,
+  useAddCategoryMutation,
+  useAddSubCategoryMutation,
+  useDeleteBrandMutation,
+  useDeleteCategoryMutation,
+  useDeleteSubCategoryMutation,
   useGetBrandQuery,
   useGetCatQuery,
   useGetSubCatQuery,
-  useAddCategoryMutation,
-  useUpdateCategoryMutation,
-  useDeleteCategoryMutation,
-  useAddBrandMutation,
   useUpdateBrandMutation,
-  useDeleteBrandMutation,
-  useAddSubCategoryMutation,
+  useUpdateCategoryMutation,
   useUpdateSubCategoryMutation,
-  useDeleteSubCategoryMutation,
 } from "@/rtk/adminSl";
-import { Delete, Pencil, Search, Plus } from "lucide-react";
+import { Delete, Pencil, Plus, Search } from "lucide-react";
 import { useState } from "react";
 
 const AdminCrud = () => {
@@ -49,14 +49,8 @@ const AdminCrud = () => {
     isLoading: loadingCat,
     refetch: refetchCategories,
   } = useGetCatQuery({});
-  const {
-    data: catBran,
-    isLoading: loadingBran,
-  } = useGetBrandQuery({});
-  const {
-    data: subCat,
-    isLoading: loadingSub,
-  } = useGetSubCatQuery({});
+  const { data: catBran, isLoading: loadingBran } = useGetBrandQuery({});
+  const { data: subCat, isLoading: loadingSub } = useGetSubCatQuery({});
 
   const [addCategory] = useAddCategoryMutation();
   const [updateCategory] = useUpdateCategoryMutation();
@@ -348,7 +342,7 @@ const AdminCrud = () => {
             >
               <div className="flex-1">
                 <img
-                  src={`http://37.27.29.18:8007/images/${cat.categoryImage}`}
+                  src={`https://shop-api.softclub.tj/images/${cat.categoryImage}`}
                   alt={cat.categoryName || "No Image"}
                   className="xl:w-[50px] xl:h-[60px] sm:w-[35px] sm:h-[30px] object-cover dark:invert mb-1 p-[2%] mx-auto"
                 />

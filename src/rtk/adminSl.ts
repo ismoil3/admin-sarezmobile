@@ -4,7 +4,7 @@ export const admin = createApi({
   reducerPath: "admin",
 
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://37.27.29.18:8007/",
+    baseUrl: "https://shop-api.softclub.tj/",
 
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("accessToken");

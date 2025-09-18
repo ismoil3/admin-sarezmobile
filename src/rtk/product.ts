@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const BASE_URL = "http://37.27.29.18:8007";
+const BASE_URL = "https://shop-api.softclub.tj";
 
 export interface Product {
   id: number;
@@ -75,7 +75,9 @@ export const productApi = createApi({
           SubCategoryId: product.SubCategoryId,
         },
       }),
-      invalidatesTags: (_result, _error, { Id }) => [{ type: "Product", id: Id }],
+      invalidatesTags: (_result, _error, { Id }) => [
+        { type: "Product", id: Id },
+      ],
     }),
   }),
 });
