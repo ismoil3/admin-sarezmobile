@@ -39,7 +39,8 @@ export default function CrudModal({
             : type === "brand"
             ? initialData.brandName
             : initialData.subCategoryName,
-        categoryId: type.trim() === "subcategory" ? initialData.categoryId : undefined,
+        categoryId:
+          type.trim() === "subcategory" ? initialData.categoryId : undefined,
         image: null as File | null,
       };
     }
@@ -63,11 +64,11 @@ export default function CrudModal({
           : type === "brand"
           ? initialData?.brandName || ""
           : initialData?.subCategoryName || "",
-      categoryId: type === "subcategory" ? initialData?.categoryId || "" : undefined,
+      categoryId:
+        type === "subcategory" ? initialData?.categoryId || "" : undefined,
       image: null,
-    })
-  },[initialData,type])
-
+    });
+  }, [initialData, type]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -77,12 +78,16 @@ export default function CrudModal({
 
     if (!formData.name.trim()) {
       newErrors.name = `${
-        type.charAt(0).toUpperCase() + type.slice(1)
-      } name is required`;
+        type === "category"
+          ? "Название категории"
+          : type === "brand"
+          ? "Название бренда"
+          : "Название подкатегории"
+      } обязательно для заполнения`;
     }
 
     if (type === "subcategory" && !formData.categoryId) {
-      newErrors.categoryId = "Category selection is required";
+      newErrors.categoryId = "Выбор категории обязателен";
     }
 
     setErrors(newErrors);
@@ -108,7 +113,7 @@ export default function CrudModal({
       });
       setErrors({});
     } catch (error) {
-      console.error("Form submission error:", error);
+      console.error("Ошибка отправки формы:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -121,7 +126,7 @@ export default function CrudModal({
       if (!file.type.startsWith("image/")) {
         setErrors((prev) => ({
           ...prev,
-          image: "Please select a valid image file",
+          image: "Пожалуйста, выберите корректный файл изображения",
         }));
         return;
       }
@@ -129,7 +134,7 @@ export default function CrudModal({
       if (file.size > 5 * 1024 * 1024) {
         setErrors((prev) => ({
           ...prev,
-          image: "Image size must be less than 5MB",
+          image: "Размер изображения должен быть меньше 5MB",
         }));
         return;
       }
@@ -159,10 +164,10 @@ export default function CrudModal({
           <div>
             <Label htmlFor="name">
               {type === "category"
-                ? "Category Name"
+                ? "Название категории"
                 : type === "brand"
-                ? "Brand Name"
-                : "Subcategory Name"}
+                ? "Название бренда"
+                : "Название подкатегории"}
             </Label>
             <Input
               id="name"
@@ -182,7 +187,7 @@ export default function CrudModal({
 
           {type === "subcategory" && (
             <div>
-              <Label htmlFor="categoryId">Category</Label>
+              <Label htmlFor="categoryId">Категория</Label>
               <select
                 id="categoryId"
                 value={formData.categoryId}
@@ -200,7 +205,7 @@ export default function CrudModal({
                 disabled={isSubmitting}
                 required
               >
-                <option value="">Select Category</option>
+                <option value="">Выберите категорию</option>
                 {categories.map((cat: any) => (
                   <option key={cat.id} value={cat.id}>
                     {cat.categoryName}
@@ -215,7 +220,7 @@ export default function CrudModal({
 
           {type === "category" && (
             <div>
-              <Label htmlFor="image">Category Image</Label>
+              <Label htmlFor="image">Изображение категории</Label>
               <div className="flex items-center gap-2">
                 <Input
                   id="image"
@@ -233,7 +238,9 @@ export default function CrudModal({
                   disabled={isSubmitting}
                 >
                   <Upload className="w-4 h-4 mr-2" />
-                  {formData.image ? formData.image.name : "Choose Image"}
+                  {formData.image
+                    ? formData.image.name
+                    : "Выберите изображение"}
                 </Button>
               </div>
               {errors.image && (
@@ -250,18 +257,18 @@ export default function CrudModal({
               className="flex-1 bg-transparent"
               disabled={isSubmitting}
             >
-              Cancel
+              Отмена
             </Button>
             <Button type="submit" className="flex-1" disabled={isSubmitting}>
               {isSubmitting ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  {mode === "add" ? "Adding..." : "Updating..."}
+                  {mode === "add" ? "Добавление..." : "Обновление..."}
                 </>
               ) : mode === "add" ? (
-                "Add"
+                "Добавить"
               ) : (
-                "Update"
+                "Обновить"
               )}
             </Button>
           </div>

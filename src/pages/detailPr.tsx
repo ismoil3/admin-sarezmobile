@@ -51,7 +51,7 @@ const DetailPr = () => {
   const [addProd] = usePostProdMutation();
 
   const navigate = useNavigate();
-  const { register, handleSubmit, reset, setValue } = useForm();
+  const { register, handleSubmit, reset, setValue, watch } = useForm();
 
   const inputClass =
     "bg-card border-border hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 px-4 py-3 rounded-lg text-foreground placeholder:text-muted-foreground shadow-sm hover:shadow-md";
@@ -392,6 +392,7 @@ const DetailPr = () => {
                   </Label>
                   <Select
                     defaultValue="false"
+                    value={watch("HasDiscount")}
                     onValueChange={(val) => setValue("HasDiscount", val)}
                   >
                     <SelectTrigger className={inputClass}>

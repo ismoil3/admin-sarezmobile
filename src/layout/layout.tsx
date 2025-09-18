@@ -10,9 +10,9 @@ import { Search } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
-
 import { AnimatedThemeToggler } from "@/components/magicui/animated-theme-toggler";
 import { jwtDecode, type JwtPayload } from "jwt-decode";
+import { Toaster } from "sonner";
 
 const Layout = () => {
   const navigate = useNavigate();
@@ -141,6 +141,7 @@ const Layout = () => {
           </div>
         </header>
         <main className="p-6">
+          <Toaster />
           <Outlet />
         </main>
       </SidebarInset>

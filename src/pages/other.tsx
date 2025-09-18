@@ -42,7 +42,7 @@ const AdminCrud = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const tabs = ["Categories", "Brands", "SubCategories"];
+  const tabs = ["Категории", "Бренды", "Подкатегории"];
 
   const {
     data: catProd,
@@ -133,31 +133,31 @@ const AdminCrud = () => {
         }
 
         await addCategory(data).unwrap();
-        showToast("Category added successfully!", "success");
+        showToast("Категория успешно добавлена!", "success");
       } else {
-        data.append("Id", modalState.data.id.toString()); // Use modalState.data.id instead of formData.id
+        data.append("Id", modalState.data.id.toString());
         data.append("categoryName", formData.name);
         if (formData.image) {
           data.append("categoryImage", formData.image);
         }
 
-        console.log("[v0] Edit FormData contents:", {
+        console.log("[v0] Содержимое FormData для редактирования:", {
           id: modalState.data.id,
           name: formData.name,
           hasImage: !!formData.image,
         });
 
         await updateCategory(data).unwrap();
-        showToast("Category updated successfully!", "success");
+        showToast("Категория успешно обновлена!", "success");
       }
 
       refetchCategories();
     } catch (error: any) {
-      console.error("Error submitting category:", error);
+      console.error("Ошибка при отправке категории:", error);
       showToast(
-        `Failed to ${modalState.mode} category: ${
-          error.data?.errors?.[0] || error.message
-        }`,
+        `Не удалось ${
+          modalState.mode === "add" ? "добавить" : "обновить"
+        } категорию: ${error.data?.errors?.[0] || error.message}`,
         "error"
       );
     } finally {
@@ -170,11 +170,11 @@ const AdminCrud = () => {
     try {
       await deleteCategory(deleteState.id!).unwrap();
       closeDeleteConfirmation();
-      showToast("Category deleted successfully!", "success");
+      showToast("Категория успешно удалена!", "success");
     } catch (error: any) {
-      console.error("Error deleting category:", error);
+      console.error("Ошибка при удалении категории:", error);
       showToast(
-        `Failed to delete category: ${
+        `Не удалось удалить категорию: ${
           error.data?.errors?.[0] || error.message
         }`,
         "error"
@@ -189,20 +189,20 @@ const AdminCrud = () => {
     try {
       if (modalState.mode === "add") {
         await addBrand({ brandName: formData.name }).unwrap();
-        showToast("Brand added successfully!", "success");
+        showToast("Бренд успешно добавлен!", "success");
       } else {
         await updateBrand({
           id: formData.id,
           brandName: formData.name,
         }).unwrap();
-        showToast("Brand updated successfully!", "success");
+        showToast("Бренд успешно обновлен!", "success");
       }
     } catch (error: any) {
-      console.error("Error submitting brand:", error);
+      console.error("Ошибка при отправке бренда:", error);
       showToast(
-        `Failed to ${modalState.mode} brand: ${
-          error.data?.errors?.[0] || error.message
-        }`,
+        `Не удалось ${
+          modalState.mode === "add" ? "добавить" : "обновить"
+        } бренд: ${error.data?.errors?.[0] || error.message}`,
         "error"
       );
       console.log(error?.data, "from brand");
@@ -216,11 +216,11 @@ const AdminCrud = () => {
     try {
       await deleteBrand(deleteState.id!).unwrap();
       closeDeleteConfirmation();
-      showToast("Brand deleted successfully!", "success");
+      showToast("Бренд успешно удален!", "success");
     } catch (error: any) {
-      console.error("Error deleting brand:", error);
+      console.error("Ошибка при удалении бренд:", error);
       showToast(
-        `Failed to delete brand: ${error.data?.errors?.[0] || error.message}`,
+        `Не удалось удалить бренд: ${error.data?.errors?.[0] || error.message}`,
         "error"
       );
     } finally {
@@ -236,23 +236,23 @@ const AdminCrud = () => {
           categoryId: Number.parseInt(formData.categoryId),
           subCategoryName: formData.name,
         }).unwrap();
-        showToast("Subcategory added successfully!", "success");
+        showToast("Подкатегория успешно добавлена!", "success");
       } else {
-        console.log("[v0] Edit FormData contents:", formData);
+        console.log("[v0] Содержимое FormData для редактирования:", formData);
 
         await updateSubCategory({
           id: formData.id,
           categoryId: Number.parseInt(formData.categoryId),
           subCategoryName: formData.name,
         }).unwrap();
-        showToast("Subcategory updated successfully!", "success");
+        showToast("Подкатегория успешно обновлена!", "success");
       }
     } catch (error: any) {
-      console.error("Error submitting subcategory:", error);
+      console.error("Ошибка при отправке подкатегории:", error);
       showToast(
-        `Failed to ${modalState.mode} subcategory: ${
-          error.data?.errors?.[0] || error.message
-        }`,
+        `Не удалось ${
+          modalState.mode === "add" ? "добавить" : "обновить"
+        } подкатегорию: ${error.data?.errors?.[0] || error.message}`,
         "error"
       );
     } finally {
@@ -265,11 +265,11 @@ const AdminCrud = () => {
     try {
       await deleteSubCategory(deleteState.id!).unwrap();
       closeDeleteConfirmation();
-      showToast("Subcategory deleted successfully!", "success");
+      showToast("Подкатегория успешно удалена!", "success");
     } catch (error: any) {
-      console.error("Error deleting subcategory:", error);
+      console.error("Ошибка при удалении подкатегории:", error);
       showToast(
-        `Failed to delete subcategory: ${
+        `Не удалось удалить подкатегорию: ${
           error.data?.errors?.[0] || error.message
         }`,
         "error"
@@ -314,14 +314,14 @@ const AdminCrud = () => {
           className="px-5 py-2 xl:text-[15px] sm:text-[13px] rounded-lg font-medium shadow-md bg-blue-600 hover:bg-blue-700 text-white dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:text-white transition-all duration-300 ease-in-out disabled:opacity-50"
         >
           <Plus className="w-4 h-4 mr-2" />
-          Add {tabs[click].slice(0, -1)}
+          Добавить {tabs[click].slice(0, -1)}
         </Button>
       </div>
 
       <div className="flex items-center w-full sm:w-[250px] px-4 py-2 rounded-lg shadow-md bg-gradient-to-r from-blue-100/30 to-blue-200/20 dark:from-cyan-700/30 dark:to-cyan-600/20 hover:from-blue-200/50 hover:to-blue-300/30 dark:hover:from-cyan-600/40 dark:hover:to-cyan-500/20 border border-transparent hover:border-blue-300 dark:hover:border-cyan-500 sm:m-auto xl:m-0 transition-all duration-300 backdrop-blur-sm">
         <input
           type="text"
-          placeholder="Search..."
+          placeholder="Поиск..."
           className="flex-1 bg-transparent border-none outline-none text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"
         />
         <Search className="w-5 h-5 text-slate-500 dark:text-slate-400" />
@@ -343,7 +343,7 @@ const AdminCrud = () => {
               <div className="flex-1">
                 <img
                   src={`https://shop-api.softclub.tj/images/${cat.categoryImage}`}
-                  alt={cat.categoryName || "No Image"}
+                  alt={cat.categoryName || "Нет изображения"}
                   className="xl:w-[50px] xl:h-[60px] sm:w-[35px] sm:h-[30px] object-cover dark:invert mb-1 p-[2%] mx-auto"
                 />
                 <h1 className="xl:text-sm sm:text-[10px] font-medium text-center">
@@ -377,8 +377,8 @@ const AdminCrud = () => {
               <table className="w-full">
                 <thead>
                   <tr className="border-b">
-                    <th className="!px-4 py-2 text-left">Brand</th>
-                    <th className="!px-4 py-2 text-end">Action</th>
+                    <th className="!px-4 py-2 text-left">Бренд</th>
+                    <th className="!px-4 py-2 text-end">Действие</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -429,9 +429,9 @@ const AdminCrud = () => {
                   {sub.subCategoryName}
                 </h1>
                 <p className="text-xs text-gray-500">
-                  Category:{" "}
+                  Категория:{" "}
                   {catProd?.data?.find((cat: any) => cat.id === sub.categoryId)
-                    ?.categoryName || "Unknown"}
+                    ?.categoryName || "Неизвестно"}
                 </p>
               </div>
               <div className="flex gap-1">
@@ -463,8 +463,12 @@ const AdminCrud = () => {
       <CrudModal
         isOpen={modalState.isOpen}
         onClose={closeModal}
-        title={`${modalState.mode === "add" ? "Add" : "Edit"} ${
-          modalState.type.charAt(0).toUpperCase() + modalState.type.slice(1)
+        title={`${modalState.mode === "add" ? "Добавить" : "Редактировать"} ${
+          modalState.type === "category"
+            ? "категорию"
+            : modalState.type === "brand"
+            ? "бренд"
+            : "подкатегорию"
         }`}
         type={modalState.type}
         mode={modalState.mode}

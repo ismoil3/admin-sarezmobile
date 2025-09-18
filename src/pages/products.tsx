@@ -53,14 +53,14 @@ const Products = () => {
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <h1 className="text-2xl xl:text-3xl font-semibold text-slate-900 dark:text-slate-100">
-          Orders
+          Товары
         </h1>
 
         <button
           onClick={goToDetail}
           className="px-5 py-2 xl:text-[15px] sm:text-[13px] rounded-lg font-medium shadow-md border border-transparent bg-gradient-to-r from-blue-100/40 to-blue-200/30 dark:from-cyan-700/30 dark:to-cyan-600/20 hover:from-blue-200/50 hover:to-blue-300/40 dark:hover:from-cyan-600/40 dark:hover:to-cyan-500/30 hover:border-blue-300 dark:hover:border-cyan-500 transition-all duration-300 ease-in-out backdrop-blur-sm"
         >
-          + Add Product
+          + Добавить товар
           <kbd className="sm:hidden xl:inline"> ⌘Y </kbd>
         </button>
       </div>
@@ -78,7 +78,7 @@ const Products = () => {
           >
             <input
               type="text"
-              placeholder="Search..."
+              placeholder="Поиск..."
               className="flex-1 bg-transparent border-none outline-none text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"
             />
             <Search className="w-5 h-5 text-slate-500 dark:text-slate-400" />
@@ -99,20 +99,20 @@ const Products = () => {
               <th className="px-4 py-3 text-left text-sm sm:text-base font-medium text-gray-500">
                 <div className="flex items-center gap-3">
                   <Checkbox />
-                  Product
+                  Товар
                 </div>
               </th>
               <th className="px-4 py-3 text-left text-sm sm:text-base font-medium text-gray-500">
-                Inventory
+                Инвентарь
               </th>
               <th className="px-4 py-3 text-left text-sm sm:text-base font-medium text-gray-500">
-                Category
+                Категория
               </th>
               <th className="px-4 py-3 text-left text-sm sm:text-base font-medium text-gray-500">
-                Price
+                Цена
               </th>
               <th className="px-4 py-3 text-left text-sm sm:text-base font-medium text-gray-500">
-                Action
+                Действие
               </th>
             </tr>
           </thead>
@@ -213,7 +213,7 @@ const Products = () => {
             disabled={currentPage === 1}
             className="px-3 py-1 absolute xl:block sm:hidden left-16 top-8 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition"
           >
-            Prev
+            Назад
           </button>
         )}
         <div className="flex items-center justify-center">
@@ -246,7 +246,7 @@ const Products = () => {
               disabled={currentPage === totalPages}
               className="px-3 py-1 absolute right-20 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition xl:block sm:hidden "
             >
-              Next
+              Вперед
             </button>
           )}
         </div>

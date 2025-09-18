@@ -89,22 +89,19 @@ const Users = () => {
   return (
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <h1
-          className="text-2xl xl:text-3xl font-semibold text-slate-900 dark:text-slate-100"
-          onClick={() => toast("1")}
-        >
-          Orders
+        <h1 className="text-2xl xl:text-3xl font-semibold text-slate-900 dark:text-slate-100">
+          Пользователи
         </h1>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <button className="px-5 py-2 xl:text-[15px] sm:text-[13px]  rounded-lg font-medium shadow-md border border-transparent bg-gradient-to-r from-blue-100/40 to-blue-200/30 dark:from-cyan-700/30 dark:to-cyan-600/20 hover:from-blue-200/50 hover:to-blue-300/40 dark:hover:from-cyan-600/40 dark:hover:to-cyan-500/30 hover:border-blue-300 dark:hover:border-cyan-500 transition-all duration-300 ease-in-out backdrop-blur-sm">
-              + Add User
+              + Добавить пользователя
               <kbd className="sm:hidden xl:inline "> ⌘Y </kbd>
             </button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Are you absolutely sure?</DialogTitle>
+              <DialogTitle>Вы уверены?</DialogTitle>
               <form
                 onSubmit={handleRegis}
                 className="w-full max-w-md mx-auto  p-6 rounded-2xl shadow-sm backdrop-blur-md"
@@ -112,7 +109,7 @@ const Users = () => {
                 {/* Input fields */}
                 <input
                   type="text"
-                  placeholder="Username"
+                  placeholder="Имя пользователя"
                   name="userName"
                   className="w-full border border-slate-300 dark:border-slate-600 bg-white/50 dark:bg-slate-900/30
                p-2.5 rounded-lg mt-3 focus:ring-2 focus:ring-blue-400 dark:focus:ring-cyan-500
@@ -120,7 +117,7 @@ const Users = () => {
                 />
                 <input
                   type="text"
-                  placeholder="Phone Number"
+                  placeholder="Номер телефона"
                   name="phoneNumber"
                   className="w-full border border-slate-300 dark:border-slate-600 bg-white/50 dark:bg-slate-900/30
                p-2.5 rounded-lg mt-3 focus:ring-2 focus:ring-blue-400 dark:focus:ring-cyan-500
@@ -136,7 +133,7 @@ const Users = () => {
                 />
                 <input
                   type="password"
-                  placeholder="Password"
+                  placeholder="Пароль"
                   name="password"
                   className="w-full border border-slate-300 dark:border-slate-600 bg-white/50 dark:bg-slate-900/30
                p-2.5 rounded-lg mt-3 focus:ring-2 focus:ring-blue-400 dark:focus:ring-cyan-500
@@ -144,7 +141,7 @@ const Users = () => {
                 />
                 <input
                   type="password"
-                  placeholder="Confirm Password"
+                  placeholder="Подтвердите пароль"
                   name="confirmPassword"
                   className="w-full border border-slate-300 dark:border-slate-600 bg-white/50 dark:bg-slate-900/30
                p-2.5 rounded-lg mt-3 focus:ring-2 focus:ring-blue-400 dark:focus:ring-cyan-500
@@ -155,7 +152,7 @@ const Users = () => {
                   type="submit"
                   className="block px-3 !mt-4 w-[70%] m-auto text-[14px] py-2 rounded-lg font-medium  bg-gradient-to-r dark:from-cyan-700/20 dark:to-cyan-600/20  hover:text-cyan-400 from-blue-200/50 to-blue-300/40  dark:hover:from-cyan-600/40 dark:hover:to-cyan-500/20  border border-transparent hover:border-blue-300 dark:hover:border-cyan-500  transition-all duration-300 backdrop-blur-sm"
                 >
-                  Submit
+                  Отправить
                 </button>
               </form>
             </DialogHeader>
@@ -176,7 +173,7 @@ const Users = () => {
           >
             <input
               type="text"
-              placeholder="Search..."
+              placeholder="Поиск..."
               onInput={(e: any) => setVal(e.target.value)}
               className="flex-1 bg-transparent border-none outline-none text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"
             />
@@ -191,16 +188,16 @@ const Users = () => {
                 shadow-sm hover:shadow-md text-slate-800 dark:text-slate-100
                 transition-all duration-300 ease-in-out flex items-center justify-between px-3"
             >
-              <SelectValue placeholder="Filter" />
+              <SelectValue placeholder="Фильтр" />
             </SelectTrigger>
 
             <SelectContent
               className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700
                 shadow-lg rounded-lg overflow-hidden backdrop-blur-sm"
             >
-              <SelectItem value="all">All</SelectItem>
-              <SelectItem value="Admin">Admin</SelectItem>
-              <SelectItem value="User">User</SelectItem>
+              <SelectItem value="all">Все</SelectItem>
+              <SelectItem value="Admin">Админ</SelectItem>
+              <SelectItem value="User">Пользователь</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -225,20 +222,20 @@ const Users = () => {
               <th className="px-4 py-3 text-left text-sm sm:text-base font-medium text-gray-500">
                 <div className="flex items-center gap-3">
                   <Checkbox />
-                  Users
+                  Пользователи
                 </div>
               </th>
               <th className="px-4 py-3 text-left text-sm sm:text-base font-medium text-gray-500">
-                Date
+                Дата
               </th>
               <th className="px-4 py-3 text-left text-sm sm:text-base font-medium text-gray-500">
-                Payment status
+                Статус оплаты
               </th>
               <th className="px-4 py-3 text-left text-sm sm:text-base font-medium text-gray-500">
-                Number
+                Номер
               </th>
               <th className="px-4 py-3 text-left text-sm sm:text-base font-medium text-gray-500">
-                Action
+                Действие
               </th>
             </tr>
           </thead>
@@ -279,7 +276,7 @@ const Users = () => {
                         />
                         <img
                           src={`https://shop-api.softclub.tj/images/${user?.image}`}
-                          alt="User avatar"
+                          alt="Аватар пользователя"
                           className="w-10 h-10 rounded-full object-cover"
                           onError={(e) => {
                             e.currentTarget.src =
@@ -339,8 +336,12 @@ const Users = () => {
                             >
                               {isLoading ? (
                                 <span className="w-4 h-4 border-2 border-gray-300 border-t-cyan-400 rounded-full animate-spin inline-block" />
+                              ) : roleName === "Admin" ? (
+                                "Админ"
+                              ) : roleName === "User" ? (
+                                "Пользователь"
                               ) : (
-                                roleName
+                                "СуперАдмин"
                               )}
                             </button>
                           );
@@ -379,7 +380,7 @@ const Users = () => {
             disabled={currentPage === 1}
             className="px-3 py-1 absolute xl:block sm:hidden left-16 top-8 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition"
           >
-            Prev
+            Назад
           </button>
         )}
         <div className="flex items-center justify-center">
@@ -412,7 +413,7 @@ const Users = () => {
               disabled={currentPage === totalPages}
               className="px-3 py-1 absolute right-20 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition xl:block sm:hidden "
             >
-              Next
+              Вперед
             </button>
           )}
         </div>
