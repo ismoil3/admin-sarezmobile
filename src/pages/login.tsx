@@ -38,29 +38,17 @@ const Login = () => {
           }
         } catch (err) {
           console.error("Недействительный токен", err);
-          toast({
-            title: "Ошибка входа",
-            description:
-              "Получен недействительный токен. Пожалуйста, попробуйте снова.",
-            variant: "destructive",
-          });
+          toast(
+            "Получен недействительный токен. Пожалуйста, попробуйте снова."
+          );
           return;
         }
       } else {
-        toast({
-          title: "Ошибка входа",
-          description: "Неверное имя пользователя или пароль.",
-          variant: "destructive",
-        });
+        toast("Неверное имя пользователя или пароль.");
       }
     } catch (error) {
       console.error("Ошибка входа:", error);
-      toast({
-        title: "Ошибка входа",
-        description:
-          "Произошла ошибка при входе. Пожалуйста, попробуйте снова.",
-        variant: "destructive",
-      });
+      toast("Произошла ошибка при входе. Пожалуйста, попробуйте снова.");
     } finally {
       setIsLoading(false);
     }
@@ -72,11 +60,7 @@ const Login = () => {
     const password = e.target["password"].value;
 
     if (!userName || !password) {
-      toast({
-        title: "Недостаточно информации",
-        description: "Пожалуйста, введите имя пользователя и пароль.",
-        variant: "destructive",
-      });
+      toast("Пожалуйста, введите имя пользователя и пароль.");
       return;
     }
 
