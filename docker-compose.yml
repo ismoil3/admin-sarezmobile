@@ -10,8 +10,11 @@
 
 services:
   frontend:
-    build: .
-    container_name: my-react-app
+    image: tajievolimjon/admin_sarez_web
+    container_name: admin_sarez_web
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     restart: unless-stopped
