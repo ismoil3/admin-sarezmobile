@@ -1,0 +1,17 @@
+# services:
+#   frontend:
+#     build: .
+#     ports:
+#       - "3000:3000"
+#     volumes:
+#       - .:/app
+#       - /app/node_modules
+#     command: ["npm", "run", "dev", "--", "--host"]
+
+services:
+  frontend:
+    build: .
+    container_name: my-react-app
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
