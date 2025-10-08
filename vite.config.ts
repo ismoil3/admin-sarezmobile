@@ -10,14 +10,12 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-
   server: {
     host: "0.0.0.0",
-    allowedHosts: true,
+    allowedHosts: ["admin.sarezmobile.com", "www.admin.sarezmobile.com"],
   },
-
   preview: {
     host: "0.0.0.0",
-    allowedHosts: true,
+    allowedHosts: ["admin.sarezmobile.com", "www.admin.sarezmobile.com"],
   },
 });
