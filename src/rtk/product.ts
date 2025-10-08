@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const BASE_URL = "https://shop-api.softclub.tj";
+const BASE_URL = "https://api.sarezmobile.com";
 
 export interface Product {
   id: number;

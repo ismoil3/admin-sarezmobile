@@ -275,7 +275,7 @@ const Users = () => {
                           }}
                         />
                         <img
-                          src={`https://shop-api.softclub.tj/images/${user?.image}`}
+                          src={`https://api.sarezmobile.com/images/${user?.image}`}
                           alt="Аватар пользователя"
                           className="w-10 h-10 rounded-full object-cover"
                           onError={(e) => {

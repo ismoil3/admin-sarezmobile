@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const Request = axios.create({
-  baseURL: "https://shop-api.softclub.tj/",
+  baseURL: "https://api.sarezmobile.com/",
 });
 
 Request.interceptors.request.use((config) => {

@@ -165,7 +165,7 @@ const Products = () => {
                       />
 
                       <img
-                        src={`https://shop-api.softclub.tj/images/${prod?.image}`}
+                        src={`https://api.sarezmobile.com/images/${prod?.image}`}
                         alt={prod?.productName}
                         onError={(e) => {
                           e.currentTarget.src =

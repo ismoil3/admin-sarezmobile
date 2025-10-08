@@ -56,7 +56,7 @@ export function VersionSwitcher() {
                 <div className="bg-sidebar-primary text-sidebar-primary-foreground flex w-10 h-10 items-center justify-center rounded-full shadow-md overflow-hidden">
                   {decoded?.sub ? (
                     <img
-                      src={`https://shop-api.softclub.tj/images/${decoded.sub}`}
+                      src={`https://api.sarezmobile.com/images/${decoded.sub}`}
                       alt={decoded?.name || "User"}
                       className="w-full h-full object-cover"
                     />

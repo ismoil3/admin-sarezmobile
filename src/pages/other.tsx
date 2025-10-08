@@ -342,7 +342,7 @@ const AdminCrud = () => {
             >
               <div className="flex-1">
                 <img
-                  src={`https://shop-api.softclub.tj/images/${cat.categoryImage}`}
+                  src={`https://api.sarezmobile.com/images/${cat.categoryImage}`}
                   alt={cat.categoryName || "Нет изображения"}
                   className="xl:w-[50px] xl:h-[60px] sm:w-[35px] sm:h-[30px] object-cover dark:invert mb-1 p-[2%] mx-auto"
                 />

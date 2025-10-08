@@ -171,7 +171,7 @@ const DetailPr = () => {
     setIsAddingColor(true);
     try {
       const response = await fetch(
-        `https://shop-api.softclub.tj/Color/add-color?ColorName=${encodeURIComponent(
+        `https://api.sarezmobile.com/Color/add-color?ColorName=${encodeURIComponent(
           colorToUse
         )}`,
         {
