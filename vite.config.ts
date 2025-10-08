@@ -12,7 +12,7 @@ export default defineConfig({
     },
   },
   preview: {
-    allowedHosts: ["admin.sarezmobile.com"],
+    allowedHosts: ["admin.sarezmobile.com", "www.admin.sarezmobile.com"],
     port: 3001,
   },
   server: {
