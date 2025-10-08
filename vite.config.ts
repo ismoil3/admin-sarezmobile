@@ -3,7 +3,6 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
@@ -11,11 +10,13 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  preview: {
-    allowedHosts: ["admin.sarezmobile.com", "www.admin.sarezmobile.com"],
-    port: 3001,
-  },
   server: {
+    host: true,
     port: 3000,
+  },
+  preview: {
+    host: true,
+    port: 3001,
+    allowedHosts: ["admin.sarezmobile.com", "www.admin.sarezmobile.com"],
   },
 });
