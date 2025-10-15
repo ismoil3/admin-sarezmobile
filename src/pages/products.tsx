@@ -1,8 +1,10 @@
 "use client";
 
+import AddImageModal from "@/components/add-image-modal";
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useProdDelMutation, useProdGetQuery } from "@/rtk/adminSl";
-import { Delete, Pen, Search, Trash } from "lucide-react";
+import { Delete, Image, Pen, Search, Trash } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
@@ -18,6 +20,20 @@ const Products = () => {
   const endIndex = startIndex + itemsPerPage;
   const currentTodos = todos.slice(startIndex, endIndex);
   const totalPages = Math.ceil(todos.length / itemsPerPage);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
+
+  // ... your existing code
+
+  const openImageModal = (productId: number) => {
+    setSelectedProductId(productId);
+    setIsImageModalOpen(true);
+  };
+
+  const closeImageModal = () => {
+    setIsImageModalOpen(false);
+    setSelectedProductId(null);
+  };
 
   const [arr, setArr] = useState<number[]>([]);
 
@@ -193,6 +209,14 @@ const Products = () => {
                       >
                         <Pen />
                       </button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => openImageModal(prod?.id)}
+                        className="text-green-600 hover:text-green-800"
+                      >
+                        <Image className="w-4 h-4" />
+                      </Button>
                       <button
                         className="text-red-600"
                         onClick={() => ProdDele(prod?.id)}
@@ -251,6 +275,12 @@ const Products = () => {
           )}
         </div>
       </div>
+
+      <AddImageModal
+        isOpen={isImageModalOpen}
+        onClose={closeImageModal}
+        productId={selectedProductId || 0}
+      />
     </div>
   );
 };

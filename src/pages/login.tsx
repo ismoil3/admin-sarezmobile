@@ -117,6 +117,7 @@ const Login = () => {
                 isLoading ? "opacity-50" : ""
               }`}
               placeholder="Имя пользователя"
+              required
             />
             <Input
               type="password"
@@ -124,18 +125,11 @@ const Login = () => {
               disabled={isLoading}
               className={`w-full p-3 mb-4 border border-gray-300 text-black rounded focus:outline-none focus:ring-2 focus:ring-blue-400 ${
                 isLoading ? "opacity-50" : ""
-              }`}
+                }`}
+              required
               placeholder="Пароль"
             />
-            <button
-              type="button"
-              disabled={isLoading}
-              className={`w-full text-blue-600 bg-white py-3 rounded mb-4 hover:bg-blue-50 transition-colors ${
-                isLoading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-            >
-              Забыли пароль?
-            </button>
+          
             <button
               type="submit"
               disabled={isLoading}

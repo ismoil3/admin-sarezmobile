@@ -17,10 +17,8 @@ const data = {
   versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
   navMain: [
     {
-      title: "Архитектура",
       url: "#",
       items: [
-        { title: `Панель управления`, url: "/" },
         { title: "Пользователи", url: "/user" },
         { title: "Товары", url: "/products" },
         { title: "Другое", url: "/other" },
@@ -50,11 +48,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
 
       <SidebarContent className="p-4">
-        {data.navMain.map((group) => (
+        {data.navMain.map((group:any) => (
           <SidebarGroup key={group.title} className="mb-6">
             <SidebarGroupContent>
               <SidebarMenu className="space-y-1 w-full min-w-0">
-                {group.items.map((item) => {
+                {group.items.map((item:any) => {
                   const isActive = item.url === pathname;
                   return (
                     <SidebarMenuItem key={item.title} className="min-w-0">

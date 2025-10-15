@@ -41,6 +41,11 @@ const DetailPr = () => {
   const [isAddingColor, setIsAddingColor] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // New state for description options
+  const [descriptionOptions, setDescriptionOptions] = useState<any[]>([]);
+  const [newOptionName, setNewOptionName] = useState("");
+  const [newOptionValue, setNewOptionValue] = useState("");
+
   const { data, isLoading: categoriesLoading } = useGetSubCatQuery({});
   const { data: catBran, isLoading: brandsLoading } = useGetBrandQuery({});
   const {
@@ -51,7 +56,7 @@ const DetailPr = () => {
   const [addProd] = usePostProdMutation();
 
   const navigate = useNavigate();
-  const { register, handleSubmit, reset, setValue, watch } = useForm();
+  const { register, handleSubmit, reset, setValue } = useForm();
 
   const inputClass =
     "bg-card border-border hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 px-4 py-3 rounded-lg text-foreground placeholder:text-muted-foreground shadow-sm hover:shadow-md";
@@ -71,12 +76,7 @@ const DetailPr = () => {
     if (!data.Description?.trim()) {
       newErrors.Description = "Описание обязательно";
     }
-    if (!data.Price || data.Price <= 0) {
-      newErrors.Price = "Цена должна быть больше 0";
-    }
-    if (!data.Quantity || data.Quantity <= 0) {
-      newErrors.Quantity = "Количество должно быть больше 0";
-    }
+
     if (!data.SubCategoryId) {
       newErrors.SubCategoryId = "Выберите категорию";
     }
@@ -85,12 +85,6 @@ const DetailPr = () => {
     }
     if (!selectedColors) {
       newErrors.colors = "Выберите хотя бы один цвет";
-    }
-    if (!data.Size?.trim()) {
-      newErrors.Size = "Введите размер";
-    }
-    if (!data.Weight?.trim()) {
-      newErrors.Weight = "Введите вес";
     }
 
     setErrors(newErrors);
@@ -123,6 +117,24 @@ const DetailPr = () => {
     setSelectedImages((prev) => prev.filter((_, i) => i !== index));
   };
 
+  // Add new description option
+  const addDescriptionOption = () => {
+    if (newOptionName.trim() && newOptionValue.trim()) {
+      const newOption = {
+        name: newOptionName.trim(),
+        value: newOptionValue.trim(),
+      };
+      setDescriptionOptions([...descriptionOptions, newOption]);
+      setNewOptionName("");
+      setNewOptionValue("");
+    }
+  };
+
+  // Remove description option
+  const removeDescriptionOption = (index: number) => {
+    setDescriptionOptions(descriptionOptions.filter((_, i) => i !== index));
+  };
+
   const onSubmit = async (data: any) => {
     if (!validateForm(data)) {
       return;
@@ -132,16 +144,23 @@ const DetailPr = () => {
     const fd = new FormData();
     fd.append("ProductName", data.ProductName);
     fd.append("Code", Date.now().toString());
-    fd.append("Description", data.Description);
+
+    const desc = [
+      { name: "Описание", value: data.Description },
+      ...descriptionOptions,
+    ];
+
+    fd.append(`Description`, JSON.stringify(desc));
+
     fd.append("SubCategoryId", String(data.SubCategoryId || ""));
     fd.append("BrandId", String(data.BrandId || ""));
     fd.append("ColorId", String(selectedColors));
-    fd.append("Quantity", String(data.Quantity));
-    fd.append("Price", String(data.Price));
-    fd.append("DiscountPrice", String(data.DiscountPrice || 0));
-    fd.append("Weight", data.Weight);
-    fd.append("Size", data.Size);
-    fd.append("HasDiscount", data.HasDiscount);
+    fd.append("Quantity", "999");
+    fd.append("Price", "20");
+    fd.append("DiscountPrice", "0");
+    fd.append("Weight", "1");
+    fd.append("Size", "1");
+    fd.append("HasDiscount", "false");
 
     if (data.Images?.length) {
       const files = Array.from(data.Images as FileList);
@@ -152,6 +171,7 @@ const DetailPr = () => {
       await addProd(fd).unwrap();
       reset();
       setSelectedImages([]);
+      setDescriptionOptions([]);
       setErrors({});
     } catch (err) {
       console.error(err);
@@ -300,12 +320,12 @@ const DetailPr = () => {
                   htmlFor="description"
                   className="text-sm font-medium text-foreground mb-2 block"
                 >
-                  Описание
+                  Основное описание
                 </Label>
                 <textarea
                   id="description"
                   {...register("Description")}
-                  placeholder="Подробное описание товара"
+                  placeholder="Основное описание товара"
                   rows={4}
                   className={`${inputClass} resize-none w-full ${
                     errors.Description
@@ -318,6 +338,83 @@ const DetailPr = () => {
                   <p className="text-destructive text-sm mt-1">
                     {errors.Description}
                   </p>
+                )}
+              </div>
+
+              {/* Description Options Section */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <Label className="text-sm font-medium text-foreground">
+                    Дополнительные опции
+                  </Label>
+                  <span className="text-sm text-muted-foreground">
+                    {descriptionOptions.length} опций
+                  </span>
+                </div>
+
+                {/* Add new option inputs */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 bg-secondary/5 rounded-lg border">
+                  <div className="sm:col-span-1">
+                    <Input
+                      placeholder="Название опции"
+                      value={newOptionName}
+                      onChange={(e) => setNewOptionName(e.target.value)}
+                      className={inputClass}
+                    />
+                  </div>
+                  <div className="sm:col-span-1">
+                    <Input
+                      placeholder="Значение опции"
+                      value={newOptionValue}
+                      onChange={(e) => setNewOptionValue(e.target.value)}
+                      className={inputClass}
+                    />
+                  </div>
+                  <div className="sm:col-span-1">
+                    <Button
+                      type="button"
+                      onClick={addDescriptionOption}
+                      disabled={!newOptionName.trim() || !newOptionValue.trim()}
+                      className="w-full bg-primary hover:bg-primary/90"
+                    >
+                      <Plus className="w-4 h-4 mr-1" />
+                      Добавить
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Display description options */}
+                {descriptionOptions.length > 0 && (
+                  <div className="space-y-2">
+                    {descriptionOptions.map((option, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center gap-3 p-3 bg-card rounded-lg border group hover:border-primary/30 transition-colors"
+                      >
+                        <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          <div>
+                            <span className="text-sm font-medium text-foreground">
+                              {option.name}
+                            </span>
+                          </div>
+                          <div>
+                            <span className="text-sm text-muted-foreground">
+                              {option.value}
+                            </span>
+                          </div>
+                        </div>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => removeDescriptionOption(index)}
+                          className="h-8 w-8 p-0 opacity-70 group-hover:opacity-100 hover:bg-destructive/20 hover:text-destructive transition-all"
+                        >
+                          <X className="w-3 h-3" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
                 )}
               </div>
 
@@ -384,152 +481,6 @@ const DetailPr = () => {
                       {errors.BrandId}
                     </p>
                   )}
-                </div>
-
-                <div>
-                  <Label className="text-sm font-medium text-foreground mb-2 block">
-                    Скидка
-                  </Label>
-                  <Select
-                    defaultValue="false"
-                    value={watch("HasDiscount")}
-                    onValueChange={(val) => setValue("HasDiscount", val)}
-                  >
-                    <SelectTrigger className={inputClass}>
-                      <SelectValue placeholder="Есть скидка?" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="true">Да</SelectItem>
-                      <SelectItem value="false">Нет</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              <div className="bg-muted/30 rounded-lg p-4 space-y-4">
-                <h3 className="text-lg font-medium text-foreground">
-                  Цена и количество
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div>
-                    <Label
-                      htmlFor="price"
-                      className="text-sm font-medium text-foreground mb-2 block"
-                    >
-                      Цена товара
-                    </Label>
-                    <input
-                      id="price"
-                      {...register("Price")}
-                      type="number"
-                      placeholder="0.00"
-                      className={`${inputClass} w-full ${
-                        errors.Price
-                          ? "border-destructive focus:border-destructive focus:ring-destructive/20"
-                          : ""
-                      }`}
-                    />
-                    {errors.Price && (
-                      <p className="text-destructive text-sm mt-1">
-                        {errors.Price}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <Label
-                      htmlFor="discountPrice"
-                      className="text-sm font-medium text-foreground mb-2 block"
-                    >
-                      Цена со скидкой
-                    </Label>
-                    <input
-                      id="discountPrice"
-                      {...register("DiscountPrice")}
-                      type="number"
-                      placeholder="0.00"
-                      className={`${inputClass} w-full`}
-                    />
-                  </div>
-                  <div>
-                    <Label
-                      htmlFor="quantity"
-                      className="text-sm font-medium text-foreground mb-2 block"
-                    >
-                      Количество
-                    </Label>
-                    <input
-                      id="quantity"
-                      {...register("Quantity")}
-                      type="number"
-                      placeholder="0"
-                      className={`${inputClass} w-full ${
-                        errors.Quantity
-                          ? "border-destructive focus:border-destructive focus:ring-destructive/20"
-                          : ""
-                      }`}
-                    />
-                    {errors.Quantity && (
-                      <p className="text-destructive text-sm mt-1">
-                        {errors.Quantity}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-muted/30 rounded-lg p-4 space-y-4">
-                <h3 className="text-lg font-medium text-foreground">
-                  Характеристики
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <Label
-                      htmlFor="size"
-                      className="text-sm font-medium text-foreground mb-2 block"
-                    >
-                      Размер
-                    </Label>
-                    <input
-                      id="size"
-                      {...register("Size")}
-                      type="text"
-                      placeholder="S, M, L, XL"
-                      className={`${inputClass} w-full ${
-                        errors.Size
-                          ? "border-destructive focus:border-destructive focus:ring-destructive/20"
-                          : ""
-                      }`}
-                    />
-                    {errors.Size && (
-                      <p className="text-destructive text-sm mt-1">
-                        {errors.Size}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <Label
-                      htmlFor="weight"
-                      className="text-sm font-medium text-foreground mb-2 block"
-                    >
-                      Вес
-                    </Label>
-                    <input
-                      id="weight"
-                      {...register("Weight")}
-                      type="text"
-                      placeholder="10кг, 20кг, 30кг"
-                      className={`${inputClass} w-full ${
-                        errors.Weight
-                          ? "border-destructive focus:border-destructive focus:ring-destructive/20"
-                          : ""
-                      }`}
-                    />
-                    {errors.Weight && (
-                      <p className="text-destructive text-sm mt-1">
-                        {errors.Weight}
-                      </p>
-                    )}
-                  </div>
                 </div>
               </div>
             </div>

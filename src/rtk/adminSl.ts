@@ -162,6 +162,14 @@ export const admin = createApi({
       }),
       invalidatesTags: ["SubCat"],
     }),
+    addImageToProduct: builder.mutation({
+      query: (formData: FormData) => ({
+        url: `Product/add-image-to-product`,
+        method: "POST",
+        body: formData,
+      }),
+      invalidatesTags: ["Prod"],
+    }),
 
     updateSubCategory: builder.mutation({
       query: ({ id, categoryId, subCategoryName }) => ({
@@ -175,7 +183,17 @@ export const admin = createApi({
       }),
       invalidatesTags: ["SubCat"],
     }),
-
+    prodGetById: builder.query({
+      query: (id: number) => `Product/get-product-by-id?id=${id}`,
+      providesTags: ["Prod"],
+    }),
+    deleteImage: builder.mutation({
+      query: (imageId: number) => ({
+        url: `Product/delete-image-from-product?imageId=${imageId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Prod"],
+    }),
     deleteSubCategory: builder.mutation({
       query: (id) => ({
         url: `SubCategory/delete-sub-category?id=${id}`,
@@ -210,4 +228,7 @@ export const {
   useAddSubCategoryMutation,
   useUpdateSubCategoryMutation,
   useDeleteSubCategoryMutation,
+  useAddImageToProductMutation,
+  useDeleteImageMutation,
+  useProdGetByIdQuery,
 } = admin;

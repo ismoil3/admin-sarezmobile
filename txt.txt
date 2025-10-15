@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -21,6 +22,7 @@ import {
   AlertCircle,
   Plus,
   X,
+  File,
   MoveLeft,
   Edit,
 } from "lucide-react";
@@ -62,6 +64,7 @@ export default function EditProductPage() {
   const productId = Number.parseInt(params.id as string);
 
   // New states for additional functionality
+  const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [descriptionOptions, setDescriptionOptions] = useState<
     DescriptionOption[]
   >([]);
@@ -228,10 +231,10 @@ export default function EditProductPage() {
         ColorId: data.colorId,
         ProductName: data.productName,
         Description: JSON.stringify(fullDescription),
-        Quantity: 999,
+        Quantity: 2,
         Weight: "...",
         Size: "..",
-        Code: Date.now().toString(),
+        Code: data.code || Date.now().toString(),
         Price: 20,
         HasDiscount: false,
         DiscountPrice: 0,
@@ -380,6 +383,21 @@ export default function EditProductPage() {
                       {errors.productName}
                     </p>
                   )}
+                </div>
+                <div className="sm:w-[200px]">
+                  <Label
+                    htmlFor="code"
+                    className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block"
+                  >
+                    Код товара
+                  </Label>
+                  <Input
+                    id="code"
+                    {...register("code")}
+                    type="text"
+                    placeholder="Код"
+                    className={`${inputClass} w-full`}
+                  />
                 </div>
               </div>
 
@@ -572,141 +590,6 @@ export default function EditProductPage() {
                     ))}
                   </div>
                 )}
-
-                {/* Категории и атрибуты */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="space-y-2">
-                    <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Бренд *
-                    </Label>
-                    <Select
-                      defaultValue={productData?.data.brandId.toString()}
-                      value={watch("brandId")?.toString()}
-                      onValueChange={(value) =>
-                        setValue("brandId", Number.parseInt(value), {
-                          shouldDirty: true,
-                        })
-                      }
-                    >
-                      <SelectTrigger className="border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500 rounded-lg">
-                        <SelectValue
-                          placeholder={
-                            brandsLoading
-                              ? "Загрузка брендов..."
-                              : "Выберите бренд"
-                          }
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {brands?.data?.map((brand: any) => (
-                          <SelectItem
-                            key={brand.id}
-                            value={brand.id.toString()}
-                          >
-                            {brand.brandName}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    {errors.brandId && (
-                      <p className="text-sm text-red-600 flex items-center gap-1">
-                        <AlertCircle className="w-3 h-3" />
-                        Бренд обязателен
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Цвет *
-                    </Label>
-                    <Select
-                      defaultValue={productData?.data.colorId.toString()}
-                      value={watch("colorId")?.toString()}
-                      onValueChange={(value) =>
-                        setValue("colorId", Number.parseInt(value), {
-                          shouldDirty: true,
-                        })
-                      }
-                    >
-                      <SelectTrigger className="border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500 rounded-lg">
-                        <SelectValue
-                          placeholder={
-                            colorsLoading
-                              ? "Загрузка цветов..."
-                              : "Выберите цвет"
-                          }
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {colors?.data?.map((color: any) => (
-                          <SelectItem
-                            key={color.id}
-                            value={color.id.toString()}
-                          >
-                            <div className="flex items-center gap-2">
-                              <div
-                                className="w-4 h-4 rounded-full border border-gray-300"
-                                style={{
-                                  backgroundColor:
-                                    color.colorName?.toLowerCase(),
-                                }}
-                              />
-                              {color.colorName}
-                            </div>
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    {errors.colorId && (
-                      <p className="text-sm text-red-600 flex items-center gap-1">
-                        <AlertCircle className="w-3 h-3" />
-                        Цвет обязателен
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Категория *
-                    </Label>
-                    <Select
-                      defaultValue={productData?.data.subCategoryId.toString()}
-                      value={watch("subCategoryId")?.toString()}
-                      onValueChange={(value) =>
-                        setValue("subCategoryId", Number.parseInt(value), {
-                          shouldDirty: true,
-                        })
-                      }
-                    >
-                      <SelectTrigger className="border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500 rounded-lg">
-                        <SelectValue
-                          placeholder={
-                            categoriesLoading
-                              ? "Загрузка категорий..."
-                              : "Выберите категорию"
-                          }
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {subCategories?.data?.map((category: any) => (
-                          <SelectItem
-                            key={category.id}
-                            value={category.id.toString()}
-                          >
-                            {category.subCategoryName}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    {errors.subCategoryId && (
-                      <p className="text-sm text-red-600 flex items-center gap-1">
-                        <AlertCircle className="w-3 h-3" />
-                        Категория обязательна
-                      </p>
-                    )}
-                  </div>
-                </div>
               </div>
 
               {hasDiscount && (
@@ -722,6 +605,142 @@ export default function EditProductPage() {
                       className={inputClass}
                     />
                   </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Right Column - Categories, Colors, Images */}
+          <div className="w-full xl:w-[400px] space-y-6">
+            {/* Categories and Brands */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 space-y-4">
+              <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
+                Категории и атрибуты
+              </h3>
+
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Подкатегория
+                  </Label>
+                  <Select
+                    value={watch("subCategoryId")?.toString()}
+                    onValueChange={(value) =>
+                      setValue("subCategoryId", Number.parseInt(value), {
+                        shouldDirty: true,
+                      })
+                    }
+                  >
+                    <SelectTrigger className={inputClass}>
+                      <SelectValue
+                        placeholder={
+                          categoriesLoading
+                            ? "Загрузка категорий..."
+                            : "Выберите подкатегорию"
+                        }
+                      />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {subCategories?.data?.map((category: any) => (
+                        <SelectItem
+                          key={category.id}
+                          value={category.id.toString()}
+                        >
+                          {category.id} – {category.subCategoryName}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {errors.subCategoryId && (
+                    <p className="text-red-600 text-sm mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3 h-3" />
+                      {errors.subCategoryId}
+                    </p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Бренд
+                  </Label>
+                  <Select
+                    value={watch("brandId")?.toString()}
+                    onValueChange={(value) =>
+                      setValue("brandId", Number.parseInt(value), {
+                        shouldDirty: true,
+                      })
+                    }
+                  >
+                    <SelectTrigger className={inputClass}>
+                      <SelectValue
+                        placeholder={
+                          brandsLoading
+                            ? "Загрузка брендов..."
+                            : "Выберите бренд"
+                        }
+                      />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {brands?.data?.map((brand: any) => (
+                        <SelectItem key={brand.id} value={brand.id.toString()}>
+                          {brand.id} – {brand.brandName}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {errors.brandId && (
+                    <p className="text-red-600 text-sm mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3 h-3" />
+                      {errors.brandId}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Colors */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-6">
+              <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
+                Цвета
+              </h3>
+              {errors.colorId && (
+                <p className="text-red-600 text-sm mb-3">{errors.colorId}</p>
+              )}
+
+              {colorsLoading ? (
+                <div className="flex gap-2">
+                  {[...Array(6)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse"
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-wrap gap-3">
+                  {colors?.data.map((color: any) => (
+                    <div
+                      key={color.id}
+                      onClick={() =>
+                        setValue("colorId", color.id, { shouldDirty: true })
+                      }
+                      className={`relative border-2 rounded-full p-1 cursor-pointer transition-all duration-200 hover:scale-110 ${
+                        watch("colorId") === color.id
+                          ? "border-blue-500 shadow-lg shadow-blue-500/25"
+                          : "border-gray-300 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-400"
+                      }`}
+                    >
+                      <div
+                        className="w-8 h-8 rounded-full shadow-inner"
+                        style={{ backgroundColor: color.colorName }}
+                      />
+                      {watch("colorId") === color.id && (
+                        <div className="absolute -top-1 -right-1 w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
+                          <div className="w-2 h-2 bg-white rounded-full" />
+                        </div>
+                      )}
+                    </div>
+                  ))}
                 </div>
               )}
             </div>

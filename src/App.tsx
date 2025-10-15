@@ -6,7 +6,6 @@ import {
 } from "react-router-dom";
 import Layout from "@/layout/layout";
 import Login from "./pages/login";
-import Dashboard from "./pages/dashboard";
 import Products from "./pages/products";
 import Other from "./pages/other";
 import Users from "./pages/user";
@@ -22,9 +21,8 @@ const App = () => {
         <Route path="login" element={<Login />} />
 
         <Route path="/" element={<Layout />}>
-          <Route index element={<Dashboard />} />
+          <Route path="products" index element={<Products />} />
           <Route path="user" element={<Users />} />
-          <Route path="products" element={<Products />} />
           <Route path="other" element={<Other />} />
           <Route path="detail" element={<Details />} />
           <Route path="edit-product/:id" element={<EditProductPage />} />
