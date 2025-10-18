@@ -27,7 +27,7 @@ export const admin = createApi({
     }),
 
     prodGet: builder.query({
-      query: () => `Product/get-products`,
+      query: () => `Product/get-products?PageSize=100000`,
       providesTags: ["Prod"],
     }),
     getCat: builder.query({
