@@ -1,12 +1,9 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -14,27 +11,30 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import {
-  ArrowLeft,
-  Save,
-  Loader2,
-  AlertCircle,
-  Plus,
-  X,
-  MoveLeft,
-  Edit,
-} from "lucide-react";
-import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "sonner";
+  useGetBrandQuery,
+  useGetColorQuery,
+  useGetSubCatQuery,
+} from "@/rtk/adminSl";
 import {
   useGetProductByIdQuery,
   useUpdateProductMutation,
 } from "@/rtk/product";
 import {
-  useGetBrandQuery,
-  useGetSubCatQuery,
-  useGetColorQuery,
-} from "@/rtk/adminSl";
+  AlertCircle,
+  ArrowLeft,
+  Edit,
+  Loader2,
+  MoveLeft,
+  Plus,
+  Save,
+  X,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 interface EditProductForm {
   productName: string;
@@ -191,19 +191,19 @@ export default function EditProductPage() {
     const newErrors: Record<string, string> = {};
 
     if (!data.productName?.trim()) {
-      newErrors.productName = "Название товара обязательно";
+      newErrors.productName = "Product name is required";
     }
     if (!data.description?.trim()) {
-      newErrors.description = "Описание обязательно";
+      newErrors.description = "Description is required";
     }
     if (!data.brandId) {
-      newErrors.brandId = "Выберите бренд";
+      newErrors.brandId = "Please select a brand";
     }
     if (!data.colorId) {
-      newErrors.colorId = "Выберите цвет";
+      newErrors.colorId = "Please select a color";
     }
     if (!data.subCategoryId) {
-      newErrors.subCategoryId = "Выберите категорию";
+      newErrors.subCategoryId = "Please select a category";
     }
 
     setErrors(newErrors);
@@ -218,7 +218,7 @@ export default function EditProductPage() {
     try {
       // Combine main description with additional options in JSON format
       const fullDescription = [
-        { name: "Описание", value: data.description },
+        { name: "Description", value: data.description },
         ...descriptionOptions,
       ];
 
@@ -238,11 +238,11 @@ export default function EditProductPage() {
         SubCategoryId: data.subCategoryId,
       }).unwrap();
 
-      toast.success("Товар успешно обновлен!");
+      toast.success("Product updated successfully!");
       router("/products");
     } catch (error) {
       console.error("Update error:", error);
-      toast.error("Не удалось обновить товар. Пожалуйста, попробуйте снова.");
+      toast.error("Failed to update product. Please try again.");
     }
   };
 
@@ -282,11 +282,10 @@ export default function EditProductPage() {
             <CardContent className="p-8 text-center">
               <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
               <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
-                Ошибка загрузки товара
+                Product Loading Error
               </h2>
               <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Не удалось загрузить данные товара. Пожалуйста, попробуйте
-                снова.
+                Failed to load product data. Please try again.
               </p>
               <Button
                 onClick={() => router("/products")}
@@ -294,7 +293,7 @@ export default function EditProductPage() {
                 className="gap-2 border-gray-300 dark:border-gray-600"
               >
                 <ArrowLeft className="w-4 h-4" />
-                Назад к товарам
+                Back to Products
               </Button>
             </CardContent>
           </Card>
@@ -313,7 +312,7 @@ export default function EditProductPage() {
             className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-200"
           >
             <MoveLeft className="w-4 h-4" />
-            <span>Назад</span>
+            <span>Back</span>
           </button>
           <div className="flex gap-3">
             <Button
@@ -323,7 +322,7 @@ export default function EditProductPage() {
               className="px-6 bg-transparent border-gray-300 dark:border-gray-600"
               disabled={isUpdating}
             >
-              Отмена
+              Cancel
             </Button>
             <Button
               type="submit"
@@ -333,12 +332,12 @@ export default function EditProductPage() {
               {isUpdating ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Сохранение...
+                  Saving...
                 </>
               ) : (
                 <>
                   <Save className="w-4 h-4 mr-2" />
-                  Сохранить
+                  Save
                 </>
               )}
             </Button>
@@ -349,7 +348,7 @@ export default function EditProductPage() {
           {/* Left Column - Product Information */}
           <div className="flex-1 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-6">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6 flex items-center gap-2">
-              Информация о товаре
+              Product Information
             </h2>
 
             <div className="space-y-6">
@@ -359,15 +358,15 @@ export default function EditProductPage() {
                     htmlFor="productName"
                     className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block"
                   >
-                    Название товара
+                    Product Name
                   </Label>
                   <Input
                     id="productName"
                     {...register("productName", {
-                      required: "Название товара обязательно",
+                      required: "Product name is required",
                     })}
                     type="text"
-                    placeholder="Введите название товара"
+                    placeholder="Enter product name"
                     className={`${inputClass} w-full ${
                       errors.productName
                         ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
@@ -388,14 +387,14 @@ export default function EditProductPage() {
                   htmlFor="description"
                   className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block"
                 >
-                  Основное описание
+                  Main Description
                 </Label>
                 <Textarea
                   id="description"
                   {...register("description", {
-                    required: "Описание обязательно",
+                    required: "Description is required",
                   })}
-                  placeholder="Основное описание товара"
+                  placeholder="Main product description"
                   rows={4}
                   className={`${inputClass} resize-none w-full ${
                     errors.description
@@ -416,10 +415,10 @@ export default function EditProductPage() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Дополнительные опции
+                    Additional Options
                   </Label>
                   <span className="text-sm text-gray-500 dark:text-gray-400">
-                    {descriptionOptions.length} опций
+                    {descriptionOptions.length} options
                   </span>
                 </div>
 
@@ -427,7 +426,7 @@ export default function EditProductPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600">
                   <div className="sm:col-span-1">
                     <Input
-                      placeholder="Название опции"
+                      placeholder="Option name"
                       value={newOptionName}
                       onChange={(e) => setNewOptionName(e.target.value)}
                       className={inputClass}
@@ -435,7 +434,7 @@ export default function EditProductPage() {
                   </div>
                   <div className="sm:col-span-1">
                     <Input
-                      placeholder="Значение опции"
+                      placeholder="Option value"
                       value={newOptionValue}
                       onChange={(e) => setNewOptionValue(e.target.value)}
                       className={inputClass}
@@ -449,7 +448,7 @@ export default function EditProductPage() {
                       className="w-full bg-blue-600 hover:bg-blue-700 text-white"
                     >
                       <Plus className="w-4 h-4 mr-1" />
-                      Добавить
+                      Add
                     </Button>
                   </div>
                 </div>
@@ -468,7 +467,7 @@ export default function EditProductPage() {
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                               <div>
                                 <Label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">
-                                  Название опции
+                                  Option Name
                                 </Label>
                                 <Input
                                   value={editingOption.name}
@@ -479,12 +478,12 @@ export default function EditProductPage() {
                                     }))
                                   }
                                   className={inputClass}
-                                  placeholder="Название опции"
+                                  placeholder="Option name"
                                 />
                               </div>
                               <div>
                                 <Label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">
-                                  Значение опции
+                                  Option Value
                                 </Label>
                                 <Input
                                   value={editingOption.value}
@@ -495,7 +494,7 @@ export default function EditProductPage() {
                                     }))
                                   }
                                   className={inputClass}
-                                  placeholder="Значение опции"
+                                  placeholder="Option value"
                                 />
                               </div>
                             </div>
@@ -507,7 +506,7 @@ export default function EditProductPage() {
                                 onClick={cancelEditing}
                                 className="border-gray-300 dark:border-gray-600"
                               >
-                                Отмена
+                                Cancel
                               </Button>
                               <Button
                                 type="button"
@@ -519,7 +518,7 @@ export default function EditProductPage() {
                                 }
                                 className="bg-green-600 hover:bg-green-700 text-white"
                               >
-                                Сохранить
+                                Save
                               </Button>
                             </div>
                           </div>
@@ -529,7 +528,7 @@ export default function EditProductPage() {
                             <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
                               <div>
                                 <Label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">
-                                  Название опции
+                                  Option Name
                                 </Label>
                                 <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
                                   {option.name}
@@ -537,7 +536,7 @@ export default function EditProductPage() {
                               </div>
                               <div>
                                 <Label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">
-                                  Значение опции
+                                  Option Value
                                 </Label>
                                 <p className="text-sm text-gray-600 dark:text-gray-400">
                                   {option.value}
@@ -551,7 +550,7 @@ export default function EditProductPage() {
                                 size="sm"
                                 onClick={() => startEditingOption(index)}
                                 className="h-8 w-8 p-0 opacity-70 group-hover:opacity-100 hover:bg-blue-100 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 transition-all"
-                                title="Редактировать"
+                                title="Edit"
                               >
                                 <Edit className="w-3 h-3" />
                               </Button>
@@ -561,7 +560,7 @@ export default function EditProductPage() {
                                 size="sm"
                                 onClick={() => removeDescriptionOption(index)}
                                 className="h-8 w-8 p-0 opacity-70 group-hover:opacity-100 hover:bg-red-100 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 transition-all"
-                                title="Удалить"
+                                title="Delete"
                               >
                                 <X className="w-3 h-3" />
                               </Button>
@@ -577,7 +576,7 @@ export default function EditProductPage() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="space-y-2">
                     <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Бренд *
+                      Brand *
                     </Label>
                     <Select
                       defaultValue={productData?.data.brandId.toString()}
@@ -592,8 +591,8 @@ export default function EditProductPage() {
                         <SelectValue
                           placeholder={
                             brandsLoading
-                              ? "Загрузка брендов..."
-                              : "Выберите бренд"
+                              ? "Loading brands..."
+                              : "Select a brand"
                           }
                         />
                       </SelectTrigger>
@@ -611,14 +610,14 @@ export default function EditProductPage() {
                     {errors.brandId && (
                       <p className="text-sm text-red-600 flex items-center gap-1">
                         <AlertCircle className="w-3 h-3" />
-                        Бренд обязателен
+                        Brand is required
                       </p>
                     )}
                   </div>
 
                   <div className="space-y-2">
                     <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Цвет *
+                      Color *
                     </Label>
                     <Select
                       defaultValue={productData?.data.colorId.toString()}
@@ -633,8 +632,8 @@ export default function EditProductPage() {
                         <SelectValue
                           placeholder={
                             colorsLoading
-                              ? "Загрузка цветов..."
-                              : "Выберите цвет"
+                              ? "Loading colors..."
+                              : "Select a color"
                           }
                         />
                       </SelectTrigger>
@@ -661,14 +660,14 @@ export default function EditProductPage() {
                     {errors.colorId && (
                       <p className="text-sm text-red-600 flex items-center gap-1">
                         <AlertCircle className="w-3 h-3" />
-                        Цвет обязателен
+                        Color is required
                       </p>
                     )}
                   </div>
 
                   <div className="space-y-2">
                     <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Категория *
+                      Category *
                     </Label>
                     <Select
                       defaultValue={productData?.data.subCategoryId.toString()}
@@ -683,8 +682,8 @@ export default function EditProductPage() {
                         <SelectValue
                           placeholder={
                             categoriesLoading
-                              ? "Загрузка категорий..."
-                              : "Выберите категорию"
+                              ? "Loading categories..."
+                              : "Select a category"
                           }
                         />
                       </SelectTrigger>
@@ -702,7 +701,7 @@ export default function EditProductPage() {
                     {errors.subCategoryId && (
                       <p className="text-sm text-red-600 flex items-center gap-1">
                         <AlertCircle className="w-3 h-3" />
-                        Категория обязательна
+                        Category is required
                       </p>
                     )}
                   </div>
@@ -713,12 +712,12 @@ export default function EditProductPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <Label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">
-                      Цена со скидкой
+                      Discount Price
                     </Label>
                     <Input
                       {...register("discountPrice", { valueAsNumber: true })}
                       type="number"
-                      placeholder="Цена со скидкой"
+                      placeholder="Discount price"
                       className={inputClass}
                     />
                   </div>

@@ -71,20 +71,20 @@ const DetailPr = () => {
     const newErrors: Record<string, string> = {};
 
     if (!data.ProductName?.trim()) {
-      newErrors.ProductName = "Название товара обязательно";
+      newErrors.ProductName = "Product name is required";
     }
     if (!data.Description?.trim()) {
-      newErrors.Description = "Описание обязательно";
+      newErrors.Description = "Description is required";
     }
 
     if (!data.SubCategoryId) {
-      newErrors.SubCategoryId = "Выберите категорию";
+      newErrors.SubCategoryId = "Please select a category";
     }
     if (!data.BrandId) {
-      newErrors.BrandId = "Выберите бренд";
+      newErrors.BrandId = "Please select a brand";
     }
     if (!selectedColors) {
-      newErrors.colors = "Выберите хотя бы один цвет";
+      newErrors.colors = "Please select at least one color";
     }
 
     setErrors(newErrors);
@@ -146,7 +146,7 @@ const DetailPr = () => {
     fd.append("Code", Date.now().toString());
 
     const desc = [
-      { name: "Описание", value: data.Description },
+      { name: "Description", value: data.Description },
       ...descriptionOptions,
     ];
 
@@ -184,7 +184,7 @@ const DetailPr = () => {
     const colorToUse = newColorValue || newColorName;
 
     if (!colorToUse.trim()) {
-      alert("Введите название цвета или выберите цвет");
+      alert("Please enter a color name or select a color");
       return;
     }
 
@@ -208,13 +208,13 @@ const DetailPr = () => {
         setNewColorName("");
         setNewColorValue("#000000");
         setShowColorModal(false);
-        alert("Цвет успешно добавлен!");
+        alert("Color added successfully!");
       } else {
         throw new Error("Failed to add color");
       }
     } catch (error) {
       console.error("Error adding color:", error);
-      alert("Ошибка при добавлении цвета");
+      alert("Error adding color");
     } finally {
       setIsAddingColor(false);
     }
@@ -234,7 +234,7 @@ const DetailPr = () => {
             className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg bg-secondary/10 hover:bg-secondary/20 text-secondary-foreground border border-secondary/20 hover:border-secondary/40 transition-all duration-200"
           >
             <MoveLeft className="w-4 h-4" />
-            <span>Назад</span>
+            <span>Back</span>
           </button>
           <div className="flex gap-3">
             <Button
@@ -243,7 +243,7 @@ const DetailPr = () => {
               className="px-6 bg-transparent"
               disabled={isSubmitting}
             >
-              Отмена
+              Cancel
             </Button>
             <Button
               type="submit"
@@ -253,10 +253,10 @@ const DetailPr = () => {
               {isSubmitting ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Сохранение...
+                  Saving...
                 </>
               ) : (
-                "Сохранить"
+                "Save"
               )}
             </Button>
           </div>
@@ -265,7 +265,7 @@ const DetailPr = () => {
         <div className="flex flex-col xl:flex-row gap-8 w-full">
           <div className="flex-1 bg-card rounded-xl border shadow-sm p-6">
             <h2 className="text-xl font-semibold text-foreground mb-6 flex items-center gap-2">
-              Информация о товаре
+              Product Information
             </h2>
 
             <div className="space-y-6">
@@ -275,13 +275,13 @@ const DetailPr = () => {
                     htmlFor="productName"
                     className="text-sm font-medium text-foreground mb-2 block"
                   >
-                    Название товара
+                    Product Name
                   </Label>
                   <input
                     id="productName"
                     {...register("ProductName")}
                     type="text"
-                    placeholder="Введите название товара"
+                    placeholder="Enter product name"
                     className={`${inputClass} w-full ${
                       errors.ProductName
                         ? "border-destructive focus:border-destructive focus:ring-destructive/20"
@@ -300,7 +300,7 @@ const DetailPr = () => {
                     id="code"
                     {...register("Code")}
                     type="text"
-                    placeholder="Код"
+                    placeholder="Code"
                     className={`${inputClass} w-full ${
                       errors.Code
                         ? "border-destructive focus:border-destructive focus:ring-destructive/20"
@@ -320,12 +320,12 @@ const DetailPr = () => {
                   htmlFor="description"
                   className="text-sm font-medium text-foreground mb-2 block"
                 >
-                  Основное описание
+                  Main Description
                 </Label>
                 <textarea
                   id="description"
                   {...register("Description")}
-                  placeholder="Основное описание товара"
+                  placeholder="Main product description"
                   rows={4}
                   className={`${inputClass} resize-none w-full ${
                     errors.Description
@@ -345,10 +345,10 @@ const DetailPr = () => {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <Label className="text-sm font-medium text-foreground">
-                    Дополнительные опции
+                    Additional Options
                   </Label>
                   <span className="text-sm text-muted-foreground">
-                    {descriptionOptions.length} опций
+                    {descriptionOptions.length} options
                   </span>
                 </div>
 
@@ -356,7 +356,7 @@ const DetailPr = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 bg-secondary/5 rounded-lg border">
                   <div className="sm:col-span-1">
                     <Input
-                      placeholder="Название опции"
+                      placeholder="Option name"
                       value={newOptionName}
                       onChange={(e) => setNewOptionName(e.target.value)}
                       className={inputClass}
@@ -364,7 +364,7 @@ const DetailPr = () => {
                   </div>
                   <div className="sm:col-span-1">
                     <Input
-                      placeholder="Значение опции"
+                      placeholder="Option value"
                       value={newOptionValue}
                       onChange={(e) => setNewOptionValue(e.target.value)}
                       className={inputClass}
@@ -378,7 +378,7 @@ const DetailPr = () => {
                       className="w-full bg-primary hover:bg-primary/90"
                     >
                       <Plus className="w-4 h-4 mr-1" />
-                      Добавить
+                      Add
                     </Button>
                   </div>
                 </div>
@@ -421,7 +421,7 @@ const DetailPr = () => {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
                   <Label className="text-sm font-medium text-foreground mb-2 block">
-                    Подкатегория
+                    Subcategory
                   </Label>
                   {categoriesLoading ? (
                     <LoadingSkeleton className="h-11 w-full rounded-lg" />
@@ -434,7 +434,7 @@ const DetailPr = () => {
                           errors.SubCategoryId ? "border-destructive" : ""
                         }`}
                       >
-                        <SelectValue placeholder="Выберите подкатегорию" />
+                        <SelectValue placeholder="Select subcategory" />
                       </SelectTrigger>
                       <SelectContent className="bg-popover border-border shadow-lg rounded-lg">
                         {data?.data?.map((e: any) => (
@@ -454,7 +454,7 @@ const DetailPr = () => {
 
                 <div>
                   <Label className="text-sm font-medium text-foreground mb-2 block">
-                    Бренд
+                    Brand
                   </Label>
                   {brandsLoading ? (
                     <LoadingSkeleton className="h-11 w-full rounded-lg" />
@@ -465,7 +465,7 @@ const DetailPr = () => {
                           errors.BrandId ? "border-destructive" : ""
                         }`}
                       >
-                        <SelectValue placeholder="Выберите бренд" />
+                        <SelectValue placeholder="Select brand" />
                       </SelectTrigger>
                       <SelectContent className="bg-popover border-border shadow-lg rounded-lg">
                         {catBran?.data?.map((e: any) => (
@@ -489,7 +489,7 @@ const DetailPr = () => {
           <div className="w-full xl:w-[400px] space-y-6">
             <div className="bg-card rounded-xl border shadow-sm p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-medium text-foreground">Цвета</h3>
+                <h3 className="text-lg font-medium text-foreground">Colors</h3>
                 <div className="flex gap-2">
                   <button
                     type="button"
@@ -497,7 +497,7 @@ const DetailPr = () => {
                     className="text-primary hover:text-primary/80 text-sm font-medium flex items-center gap-1 transition-colors"
                   >
                     <Plus className="w-3 h-3" />
-                    Создать
+                    Create
                   </button>
                 </div>
               </div>
@@ -543,15 +543,15 @@ const DetailPr = () => {
 
             <div className="bg-card rounded-xl border shadow-sm p-6">
               <h3 className="text-lg font-medium text-foreground mb-4">
-                Изображения
+                Images
               </h3>
               <div className="relative border-2 border-dashed border-border hover:border-primary/50 rounded-lg p-8 flex flex-col items-center justify-center transition-colors cursor-pointer group">
                 <File className="w-12 h-12 text-muted-foreground group-hover:text-primary transition-colors mb-3" />
                 <p className="text-muted-foreground text-sm text-center mb-1">
-                  Нажмите для загрузки или перетащите файлы
+                  Click to upload or drag files
                 </p>
                 <p className="text-muted-foreground text-xs text-center">
-                  PNG, JPG, GIF до 10MB
+                  PNG, JPG, GIF up to 10MB
                 </p>
                 <input
                   type="file"
@@ -566,7 +566,7 @@ const DetailPr = () => {
               {selectedImages.length > 0 && (
                 <div className="mt-6">
                   <p className="text-sm font-medium text-foreground mb-3">
-                    Выбранные изображения ({selectedImages.length}):
+                    Selected images ({selectedImages.length}):
                   </p>
                   <div className="grid grid-cols-2 gap-3">
                     {selectedImages.map((image, index) => (
@@ -596,9 +596,7 @@ const DetailPr = () => {
       <Dialog open={showColorModal} onOpenChange={setShowColorModal}>
         <DialogContent className="sm:max-w-md bg-card border-border">
           <DialogHeader>
-            <DialogTitle className="text-foreground">
-              Добавить новый цвет
-            </DialogTitle>
+            <DialogTitle className="text-foreground">Add New Color</DialogTitle>
           </DialogHeader>
 
           <div className="grid gap-6 py-4">
@@ -607,7 +605,7 @@ const DetailPr = () => {
                 htmlFor="color-picker"
                 className="text-sm font-medium text-foreground"
               >
-                Выберите цвет
+                Select Color
               </Label>
               <div className="flex items-center gap-3">
                 <div className="relative">
@@ -627,7 +625,7 @@ const DetailPr = () => {
                 </div>
                 <div className="flex-1">
                   <Input
-                    placeholder="Или введите название цвета"
+                    placeholder="Or enter color name"
                     value={newColorName}
                     onChange={(e) => setNewColorName(e.target.value)}
                     disabled={isAddingColor}
@@ -636,7 +634,7 @@ const DetailPr = () => {
                 </div>
               </div>
               <p className="text-sm text-muted-foreground">
-                Выберите цвет из палитры или введите название цвета
+                Select color from palette or enter color name
               </p>
             </div>
           </div>
@@ -652,7 +650,7 @@ const DetailPr = () => {
               }}
               disabled={isAddingColor}
             >
-              Отмена
+              Cancel
             </Button>
             <Button
               type="button"
@@ -665,10 +663,10 @@ const DetailPr = () => {
               {isAddingColor ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Добавление...
+                  Adding...
                 </>
               ) : (
-                "Добавить"
+                "Add"
               )}
             </Button>
           </DialogFooter>

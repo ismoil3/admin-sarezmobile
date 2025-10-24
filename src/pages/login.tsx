@@ -2,8 +2,8 @@
 
 import { Input } from "@/components/ui/input";
 import { Request } from "@/utils/config";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { jwtDecode } from "jwt-decode";
 import { toast } from "sonner";
@@ -30,25 +30,23 @@ const Login = () => {
             ];
           if (role.includes("Admin") || role.includes("SuperAdmin")) {
             localStorage.setItem("accessToken", token);
-            toast("Вход выполнен успешно");
+            toast("Login successful");
             navigate("/");
           } else {
-            toast("У вас нет прав администратора для доступа к этой панели.");
+            toast("You do not have administrator rights to access this panel.");
             return;
           }
         } catch (err) {
-          console.error("Недействительный токен", err);
-          toast(
-            "Получен недействительный токен. Пожалуйста, попробуйте снова."
-          );
+          console.error("Invalid token", err);
+          toast("Invalid token received. Please try again.");
           return;
         }
       } else {
-        toast("Неверное имя пользователя или пароль.");
+        toast("Invalid username or password.");
       }
     } catch (error) {
-      console.error("Ошибка входа:", error);
-      toast("Произошла ошибка при входе. Пожалуйста, попробуйте снова.");
+      console.error("Login error:", error);
+      toast("An error occurred during login. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -60,7 +58,7 @@ const Login = () => {
     const password = e.target["password"].value;
 
     if (!userName || !password) {
-      toast("Пожалуйста, введите имя пользователя и пароль.");
+      toast("Please enter username and password.");
       return;
     }
 
@@ -96,7 +94,7 @@ const Login = () => {
         <div className="xl:w-[50%] sm:w-[100%] xl:block sm:hidden    xl:min-h-screen sm:h-[50vh]  flex items-center  bg-gradient-to-r from-[#4c6085] to-[#1C2536]  via-[#1C2536] ">
           <div className="ml-[7%] mt-[260px] ">
             <p className="text-white text-[26px] font-medium">
-              Добро пожаловать в панель администратора
+              Welcome to the admin panel
             </p>
             <span className="bg-gradient-to-b from-green-400 via-gray-400 to-blue-500 bg-clip-text text-transparent text-4xl font-bold ">
               SAREZ MOBILE
@@ -108,7 +106,7 @@ const Login = () => {
             onSubmit={hadnleSubmit}
             className="xl:w-[60%] bg-white p-8 rounded-xl shadow-lg sm:w-[100%] "
           >
-            <p className="text-4xl font-semibold mb-6 text-gray-800">Вход</p>
+            <p className="text-4xl font-semibold mb-6 text-gray-800">Login</p>
             <Input
               type="text"
               name="userName"
@@ -116,7 +114,7 @@ const Login = () => {
               className={`w-full p-3 mb-4 border border-gray-300 text-black rounded focus:outline-none focus:ring-2 focus:ring-blue-400 ${
                 isLoading ? "opacity-50" : ""
               }`}
-              placeholder="Имя пользователя"
+              placeholder="Username"
               required
             />
             <Input
@@ -125,11 +123,11 @@ const Login = () => {
               disabled={isLoading}
               className={`w-full p-3 mb-4 border border-gray-300 text-black rounded focus:outline-none focus:ring-2 focus:ring-blue-400 ${
                 isLoading ? "opacity-50" : ""
-                }`}
+              }`}
               required
-              placeholder="Пароль"
+              placeholder="Password"
             />
-          
+
             <button
               type="submit"
               disabled={isLoading}
@@ -159,10 +157,10 @@ const Login = () => {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     ></path>
                   </svg>
-                  Вход...
+                  Logging in...
                 </>
               ) : (
-                "Войти"
+                "Login"
               )}
             </button>
           </form>

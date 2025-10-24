@@ -1,5 +1,3 @@
-import * as React from "react";
-import { VersionSwitcher } from "@/components/version-switcher";
 import {
   Sidebar,
   SidebarContent,
@@ -11,7 +9,9 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { useLocation, Link } from "react-router-dom";
+import { VersionSwitcher } from "@/components/version-switcher";
+import * as React from "react";
+import { Link, useLocation } from "react-router-dom";
 
 const data = {
   versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
@@ -19,9 +19,9 @@ const data = {
     {
       url: "#",
       items: [
-        { title: "Пользователи", url: "/user" },
-        { title: "Товары", url: "/products" },
-        { title: "Другое", url: "/other" },
+        { title: "Users", url: "/user" },
+        { title: "Products", url: "/products" },
+        { title: "Other", url: "/other" },
       ],
     },
   ],
@@ -48,11 +48,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
 
       <SidebarContent className="p-4">
-        {data.navMain.map((group:any) => (
+        {data.navMain.map((group: any) => (
           <SidebarGroup key={group.title} className="mb-6">
             <SidebarGroupContent>
               <SidebarMenu className="space-y-1 w-full min-w-0">
-                {group.items.map((item:any) => {
+                {group.items.map((item: any) => {
                   const isActive = item.url === pathname;
                   return (
                     <SidebarMenuItem key={item.title} className="min-w-0">

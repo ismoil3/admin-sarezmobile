@@ -1,24 +1,5 @@
 // components/AddImageModal.tsx
-import { useState, useRef, useEffect } from "react";
-import {
-  useAddImageToProductMutation,
-  useProdGetByIdQuery,
-  useDeleteImageMutation,
-} from "@/rtk/adminSl";
-import { X, Upload, Image as ImageIcon, Package, Trash2 } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Skeleton } from "@/components/ui/skeleton";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -29,6 +10,25 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+  useAddImageToProductMutation,
+  useDeleteImageMutation,
+  useProdGetByIdQuery,
+} from "@/rtk/adminSl";
+import { Image as ImageIcon, Package, Trash2, Upload, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 interface AddImageModalProps {
   isOpen: boolean;
@@ -159,7 +159,7 @@ const AddImageModal = ({ isOpen, onClose, productId }: AddImageModalProps) => {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <ImageIcon className="w-5 h-5" />
-              Управление изображениями товара
+              Product Image Management
             </DialogTitle>
           </DialogHeader>
 
@@ -187,7 +187,7 @@ const AddImageModal = ({ isOpen, onClose, productId }: AddImageModalProps) => {
                 ) : error ? (
                   <Alert variant="destructive">
                     <AlertDescription>
-                      Ошибка загрузки данных товара
+                      Error loading product data
                     </AlertDescription>
                   </Alert>
                 ) : product ? (
@@ -204,7 +204,7 @@ const AddImageModal = ({ isOpen, onClose, productId }: AddImageModalProps) => {
                     {/* Existing Images */}
                     <div className="space-y-3">
                       <Label>
-                        Существующие изображения ({product.images?.length || 0})
+                        Existing Images ({product.images?.length || 0})
                       </Label>
                       {product.images && product.images.length > 0 ? (
                         <ScrollArea className="h-40">
@@ -245,7 +245,7 @@ const AddImageModal = ({ isOpen, onClose, productId }: AddImageModalProps) => {
                                     )}
                                   </Button>
                                   <p className="text-xs text-muted-foreground truncate mt-1">
-                                    Изображение {index + 1}
+                                    Image {index + 1}
                                   </p>
                                 </div>
                               )
@@ -255,16 +255,14 @@ const AddImageModal = ({ isOpen, onClose, productId }: AddImageModalProps) => {
                       ) : (
                         <div className="text-center py-8 border-2 border-dashed rounded-lg">
                           <Package className="w-12 h-12 text-muted-foreground mx-auto mb-2" />
-                          <p className="text-muted-foreground">
-                            Нет изображений
-                          </p>
+                          <p className="text-muted-foreground">No images</p>
                         </div>
                       )}
                     </div>
                   </div>
                 ) : (
                   <Alert variant="destructive">
-                    <AlertDescription>Товар не найден</AlertDescription>
+                    <AlertDescription>Product not found</AlertDescription>
                   </Alert>
                 )}
               </CardContent>
@@ -272,7 +270,7 @@ const AddImageModal = ({ isOpen, onClose, productId }: AddImageModalProps) => {
 
             {/* File Upload Area */}
             <div className="space-y-2">
-              <Label>Добавить новые изображения</Label>
+              <Label>Add New Images</Label>
               <div
                 className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors cursor-pointer ${
                   isDragging
@@ -294,17 +292,15 @@ const AddImageModal = ({ isOpen, onClose, productId }: AddImageModalProps) => {
                 />
 
                 <ImageIcon className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-lg font-medium mb-2">
-                  Перетащите изображения сюда
-                </p>
+                <p className="text-lg font-medium mb-2">Drag images here</p>
                 <p className="text-sm text-muted-foreground mb-4">
-                  или нажмите для выбора файлов
+                  or click to select files
                 </p>
                 <Button type="button" variant="outline">
-                  Выбрать файлы
+                  Select Files
                 </Button>
                 <p className="text-xs text-muted-foreground mt-3">
-                  Поддерживаемые форматы: JPEG, PNG, WebP
+                  Supported formats: JPEG, PNG, WebP
                 </p>
               </div>
             </div>
@@ -312,7 +308,7 @@ const AddImageModal = ({ isOpen, onClose, productId }: AddImageModalProps) => {
             {/* Selected Files Preview */}
             {selectedFiles.length > 0 && (
               <div className="space-y-3">
-                <Label>Новые файлы для загрузки ({selectedFiles.length})</Label>
+                <Label>New Files to Upload ({selectedFiles.length})</Label>
                 <ScrollArea className="h-60">
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 pr-4">
                     {selectedFiles.map((file, index) => (
@@ -350,7 +346,7 @@ const AddImageModal = ({ isOpen, onClose, productId }: AddImageModalProps) => {
             {isUploadError && (
               <Alert variant="destructive">
                 <AlertDescription>
-                  Ошибка при загрузке изображений. Попробуйте еще раз.
+                  Error uploading images. Please try again.
                 </AlertDescription>
               </Alert>
             )}
@@ -358,7 +354,7 @@ const AddImageModal = ({ isOpen, onClose, productId }: AddImageModalProps) => {
             {isUploadSuccess && (
               <Alert variant="default" className="bg-green-50 border-green-200">
                 <AlertDescription className="text-green-800">
-                  Изображения успешно загружены!
+                  Images uploaded successfully!
                 </AlertDescription>
               </Alert>
             )}
@@ -366,7 +362,7 @@ const AddImageModal = ({ isOpen, onClose, productId }: AddImageModalProps) => {
             {/* Footer */}
             <DialogFooter>
               <Button type="button" variant="outline" onClick={handleClose}>
-                Закрыть
+                Close
               </Button>
               <Button
                 type="submit"
@@ -376,12 +372,12 @@ const AddImageModal = ({ isOpen, onClose, productId }: AddImageModalProps) => {
                 {isUploading ? (
                   <>
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    Загрузка...
+                    Uploading...
                   </>
                 ) : (
                   <>
                     <Upload className="w-4 h-4" />
-                    Загрузить ({selectedFiles.length})
+                    Upload ({selectedFiles.length})
                   </>
                 )}
               </Button>
@@ -397,14 +393,14 @@ const AddImageModal = ({ isOpen, onClose, productId }: AddImageModalProps) => {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Удалить изображение?</AlertDialogTitle>
+            <AlertDialogTitle>Delete Image?</AlertDialogTitle>
             <AlertDialogDescription>
-              Вы уверены, что хотите удалить это изображение? Это действие
-              нельзя отменить.
+              Are you sure you want to delete this image? This action cannot be
+              undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Отмена</AlertDialogCancel>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDeleteImage}
               className="bg-red-600 hover:bg-red-700"
@@ -413,7 +409,7 @@ const AddImageModal = ({ isOpen, onClose, productId }: AddImageModalProps) => {
               {isDeleting ? (
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
               ) : (
-                "Удалить"
+                "Delete"
               )}
             </AlertDialogAction>
           </AlertDialogFooter>
